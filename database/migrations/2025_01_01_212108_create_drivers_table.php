@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('license_number')->unique();
             $table->string('contact_number')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
