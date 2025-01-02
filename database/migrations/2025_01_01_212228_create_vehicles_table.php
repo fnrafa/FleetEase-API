@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('fuel_efficiency')->nullable();
             $table->date('next_service_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
