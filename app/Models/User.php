@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -14,6 +15,8 @@ use Webpatser\Uuid\Uuid;
  * @property string $role
  * @property string $password
  * @method static create(array $array)
+ * @method static whereHas(string $string, \Closure $param)
+ * @method static find($id)
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -56,6 +59,16 @@ class User extends Authenticatable implements JWTSubject
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'position_id', 'parent_id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(User::class, 'position_id', 'id');
     }
 
 }

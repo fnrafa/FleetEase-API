@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,20 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/user/change-password', [UserController::class, 'updatePassword']);
+    Route::prefix('users')->group(function () {
+        Route::post('/change-password', [UserController::class, 'updatePassword']);
+        Route::middleware(['role:admin'])->group(function () {
+            Route::get('/', [UserController::class, 'index']);
+            Route::get('/{id}', [UserController::class, 'show']);
+            Route::put('/{id}/position', [UserController::class, 'updatePosition']);
+        });
+    });
+
+    Route::middleware(['role:admin'])->prefix('positions')->group(function () {
+        Route::get('/', [PositionController::class, 'index']);
+        Route::post('/', [PositionController::class, 'store']);
+        Route::put('/{id}', [PositionController::class, 'update']);
+    });
 
     Route::prefix('drivers')->group(function () {
         Route::get('/', [DriverController::class, 'index']);

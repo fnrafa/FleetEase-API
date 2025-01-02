@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Webpatser\Uuid\Uuid;
 
+/**
+ * @method static create(array $all)
+ * @method static find($id)
+ * @method static pluck(string $string, string $string1)
+ */
 class Position extends Model
 {
     protected $keyType = 'string';
